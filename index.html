@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Malla Interactiva - Medicina Veterinaria</title>
   <style>
     body {
@@ -73,44 +73,146 @@
     <input id="fileInput" type="file" style="display:none" onchange="importarProgreso(event)" />
   </div>
   <div class="grid" id="malla"></div>
+
   <script>
-    const malla = /* aquí va el contenido de la malla (ramos y semestres) que ya tienes */;
+    const malla = [
+      { semestre: 1, color: "s1", ramos: [
+        { nombre: "Anatomía Animal I", codigo: "333001", desbloquea: ["333006"] },
+        { nombre: "Biología Celular", codigo: "241001", desbloquea: ["333007", "333008", "333009"] },
+        { nombre: "Química General", codigo: "530037", desbloquea: ["251122"] },
+        { nombre: "Zoología", codigo: "245132", desbloquea: ["333017"] },
+        { nombre: "Física General", codigo: "510144", desbloquea: ["333018"] },
+        { nombre: "Taller Formativo", codigo: "333011", desbloquea: ["333013"] },
+      ]},
+      { semestre: 2, color: "s1", ramos: [
+        { nombre: "Anatomía Animal II", codigo: "333006", desbloquea: ["333014"] },
+        { nombre: "Fisiología Animal I", codigo: "333007", desbloquea: ["333015"] },
+        { nombre: "Genética", codigo: "333008", desbloquea: ["333015"] },
+        { nombre: "Histología Animal", codigo: "333009", desbloquea: ["333016"] },
+        { nombre: "Bioquímica", codigo: "251122", desbloquea: ["333016"] },
+        { nombre: "Orientación Vocacional", codigo: "333013", desbloquea: ["730373"] },
+      ]},
+      { semestre: 3, color: "s2", ramos: [
+        { nombre: "Embriología Animal", codigo: "333014", desbloquea: ["333029"] },
+        { nombre: "Fisiología Animal II", codigo: "333015", desbloquea: ["333019", "333020"] },
+        { nombre: "Inmunología", codigo: "333016", desbloquea: ["333021", "333022", "333027"] },
+        { nombre: "Ecología", codigo: "333017", desbloquea: ["333027", "333023"] },
+        { nombre: "Bioestadística", codigo: "333018", desbloquea: ["333034", "333028"] },
+        { nombre: "Inglés I", codigo: "730373", desbloquea: ["733074"] },
+      ]},
+      { semestre: 4, color: "s2", ramos: [
+        { nombre: "Patología Animal I", codigo: "333019", desbloquea: ["333024", "333025"] },
+        { nombre: "Etología y Bienestar Animal", codigo: "333020" },
+        { nombre: "Virología", codigo: "333021", desbloquea: ["333026"] },
+        { nombre: "Bacteriología y Micología", codigo: "333022", desbloquea: ["333026"] },
+        { nombre: "Biodiversidad y Conservación", codigo: "333023" },
+        { nombre: "Inglés II", codigo: "733074", desbloquea: ["333026"] },
+      ]},
+      { semestre: 5, color: "s2", ramos: [
+        { nombre: "Patología Animal II", codigo: "333024", desbloquea: ["333031"] },
+        { nombre: "Fisiopatología Animal", codigo: "333025", desbloquea: ["333029", "333032", "333033"] },
+        { nombre: "Enfermedades Infecciosas", codigo: "333026", desbloquea: ["333043", "333034"] },
+        { nombre: "Enfermedades Parasitarias", codigo: "333027", desbloquea: ["333034"] },
+        { nombre: "Economía", codigo: "333028" },
+      ]},
+      { semestre: 6, color: "s2", ramos: [
+        { nombre: "Reproducción Animal", codigo: "333029", desbloquea: ["333039"] },
+        { nombre: "Producción y Sanidad Acuícola", codigo: "333031" },
+        { nombre: "Nutrición Animal", codigo: "333030", desbloquea: ["333040", "333041"] },
+        { nombre: "Farmacología", codigo: "333032", desbloquea: ["333042"] },
+        { nombre: "Imagenología", codigo: "333033", desbloquea: ["333042", "333043"] },
+        { nombre: "Epidemiología", codigo: "333034", desbloquea: ["333050"] },
+        { nombre: "Práctica Curricular I", codigo: "333101" },
+      ]},
+      { semestre: 7, color: "s2", ramos: [
+        { nombre: "Ginecología y Andrología", codigo: "333039", desbloquea: ["333045"] },
+        { nombre: "Alimentación Animal", codigo: "333040", desbloquea: ["333051", "333056", "333046"] },
+        { nombre: "Producción Avícola", codigo: "333041" },
+        { nombre: "Anestesiología y Cirugía", codigo: "333042", desbloquea: ["333047", "333048", "333049"] },
+        { nombre: "Semiología Animal", codigo: "333043", desbloquea: ["333048", "333049"] },
+        { nombre: "Gestión y Administración", codigo: "333044", desbloquea: ["333058"] },
+        { nombre: "Práctica Curricular II", codigo: "333102" },
+      ]},
+      { semestre: 8, color: "s3", ramos: [
+        { nombre: "Obstetricia y Neonatología", codigo: "333045", desbloquea: ["333051", "333056"] },
+        { nombre: "Producción Porcina", codigo: "333046" },
+        { nombre: "Patología Clínica", codigo: "333047", desbloquea: ["333052"] },
+        { nombre: "Medicina y Cirugía Grandes Animales", codigo: "333048", desbloquea: ["333053"] },
+        { nombre: "Medicina y Cirugía Pequeños Animales", codigo: "333049", desbloquea: ["333054"] },
+        { nombre: "Inspección e Higiene Alimentos", codigo: "333050", desbloquea: ["333055"] },
+        { nombre: "Gira de Estudio", codigo: "333103" },
+        { nombre: "Examen de Grado", codigo: "333104" },
+      ]},
+      { semestre: 9, color: "s3", ramos: [
+        { nombre: "Producción de Rumiantes de Carne", codigo: "333051" },
+        { nombre: "Medicina Preventiva", codigo: "333052" },
+        { nombre: "Clínica Grandes Animales", codigo: "333053" },
+        { nombre: "Clínica Pequeños Animales", codigo: "333054" },
+        { nombre: "Tecnología de Alimentos", codigo: "333055", desbloquea: ["333057"] },
+        { nombre: "Electivo Especialidad I", codigo: "esp1" },
+      ]},
+      { semestre: 10, color: "s3", ramos: [
+        { nombre: "Producción de Rumiantes de Leche", codigo: "333056" },
+        { nombre: "Electivo Especialidad II", codigo: "esp2" },
+        { nombre: "Electivo Especialidad III", codigo: "esp3" },
+        { nombre: "Electivo Especialidad IV", codigo: "esp4" },
+        { nombre: "Ética Médico Veterinaria", codigo: "333059" },
+        { nombre: "Salud Pública", codigo: "333057" },
+        { nombre: "Formulación y Evaluación de Proyectos", codigo: "333058" },
+        { nombre: "Práctica Titulación", codigo: "303105", desbloquea: ["333106"] },
+      ]},
+      { semestre: 11, color: "s3", ramos: [
+        { nombre: "Trabajo de Titulación", codigo: "333106" }
+      ]}
+    ];
 
     const completados = new Set(JSON.parse(localStorage.getItem("aprobados")) || []);
 
     function desbloqueado(codigo) {
-      return malla.every(sem => sem.ramos.every(r =>
-        !r.desbloquea?.includes(codigo) || completados.has(r.codigo)
-      ));
+      // Un ramo está desbloqueado si para todos los ramos que lo desbloquean, esos ramos están aprobados
+      return malla.every(semestre =>
+        semestre.ramos.every(ramo =>
+          !(ramo.desbloquea?.includes(codigo) && !completados.has(ramo.codigo))
+        )
+      );
     }
 
     function renderMalla() {
       const container = document.getElementById("malla");
       container.innerHTML = "";
-      malla.forEach(s => {
+      malla.forEach(semestre => {
         const semDiv = document.createElement("div");
-        semDiv.className = `semestre ${s.color}`;
+        semDiv.className = `semestre ${semestre.color}`;
         const titulo = document.createElement("h2");
-        titulo.textContent = `Semestre ${s.semestre}`;
+        titulo.textContent = `Semestre ${semestre.semestre}`;
         semDiv.appendChild(titulo);
-        s.ramos.forEach(r => {
+
+        semestre.ramos.forEach(ramo => {
           const ramoDiv = document.createElement("div");
           ramoDiv.className = "ramo";
-          ramoDiv.textContent = r.nombre;
-          ramoDiv.dataset.codigo = r.codigo;
-          if (!completados.has(r.codigo) && !desbloqueado(r.codigo)) ramoDiv.classList.add("bloqueado");
-          if (completados.has(r.codigo)) ramoDiv.classList.add("aprobado");
+          ramoDiv.textContent = ramo.nombre;
+          ramoDiv.dataset.codigo = ramo.codigo;
+
+          if (!completados.has(ramo.codigo) && !desbloqueado(ramo.codigo)) {
+            ramoDiv.classList.add("bloqueado");
+          }
+          if (completados.has(ramo.codigo)) {
+            ramoDiv.classList.add("aprobado");
+          }
+
           ramoDiv.onclick = () => {
-            if (completados.has(r.codigo)) {
-              completados.delete(r.codigo);
+            if (completados.has(ramo.codigo)) {
+              completados.delete(ramo.codigo);
             } else {
-              completados.add(r.codigo);
+              completados.add(ramo.codigo);
             }
             localStorage.setItem("aprobados", JSON.stringify([...completados]));
             renderMalla();
           };
+
           semDiv.appendChild(ramoDiv);
         });
+
         container.appendChild(semDiv);
       });
     }
@@ -130,15 +232,24 @@
       a.href = url;
       a.download = "progreso-veterinaria.json";
       a.click();
+      URL.revokeObjectURL(url);
     }
 
     function importarProgreso(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = e => {
-        const data = JSON.parse(e.target.result);
-        localStorage.setItem("aprobados", JSON.stringify(data));
-        location.reload();
+        try {
+          const data = JSON.parse(e.target.result);
+          if (Array.isArray(data)) {
+            localStorage.setItem("aprobados", JSON.stringify(data));
+            location.reload();
+          } else {
+            alert("Archivo inválido");
+          }
+        } catch {
+          alert("Error leyendo el archivo");
+        }
       };
       reader.readAsText(file);
     }
